@@ -1,4 +1,5 @@
 import 'package:agro_route/screens/farmer_screen.dart';
+import 'package:agro_route/screens/logistics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,7 +19,7 @@ class _StartingScreenState extends State<StartingScreen> {
   String? _selectedItem = "";
   final List<Widget> _pages = [
     FarmerScreen(),
-    FarmerScreen(),
+    LogisticsScreen(),
     MainNavigationScreen()
   ];
   int _currentIndex = 0;
@@ -40,9 +41,9 @@ class _StartingScreenState extends State<StartingScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: Styled_Text(
-            icon: Icon(CupertinoIcons.question_diamond_fill, color: Colors.amber),
+            icon: Icon(CupertinoIcons.question_diamond_fill, color: Colors.orange),
             text: 'Confirm Exit',
-            color: Colors.amber,
+            color: Colors.orange,
             size: 18,
             fontWeight: FontWeight.bold),
         content: Text("Are you sure you want to exit the app?"),
@@ -92,13 +93,13 @@ class _StartingScreenState extends State<StartingScreen> {
       child: Scaffold(
         // drawer: NavDrawer(),
         appBar: AppBar(
-          backgroundColor: Colors.amber,
+          backgroundColor: Colors.orange,
           title: Styled_Text(text: 'AgriRoute', color: Colors.white, size: 18, fontWeight: FontWeight.w600),
         ),
         body:  _pages[_currentIndex],
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.amber,
+          backgroundColor: Colors.orange,
           selectedItemColor: Colors.white,
           unselectedItemColor: Colors.white60,
           onTap: _onTapped,
@@ -106,12 +107,12 @@ class _StartingScreenState extends State<StartingScreen> {
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.agriculture_outlined),
-              label: "Farmers Page",
+              label: "Farmer",
               activeIcon: Icon(Icons.agriculture_rounded),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.list),
-              label: "Optimise Data",
+              label: "Logistics",
               activeIcon: Icon(Icons.list_alt_rounded),
             ),
             BottomNavigationBarItem(

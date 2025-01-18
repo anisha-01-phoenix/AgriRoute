@@ -9,8 +9,8 @@ class DistributionCenterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Distribution Centers in Jharkhand'),
-        backgroundColor: Colors.green[700],
+        title: Text('Distribution Centers', style: TextStyle(color: Colors.white),),
+        backgroundColor: Colors.orange[700],
         centerTitle: true,
         elevation: 4,
       ),

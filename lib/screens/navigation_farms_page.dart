@@ -9,12 +9,6 @@ class MainNavigationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Farm Management System'),
-        backgroundColor: Colors.amber[800],
-        centerTitle: true,
-        elevation: 4,
-      ),
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -84,7 +78,6 @@ class MainNavigationScreen extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: double.infinity,
-        height: 120,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           gradient: LinearGradient(
@@ -104,7 +97,7 @@ class MainNavigationScreen extends StatelessWidget {
           children: [
             Container(
               width: 100,
-              height: 120,
+              height: 80,
               decoration: BoxDecoration(
                 color: Colors.white24,
                 borderRadius: BorderRadius.only(
@@ -114,7 +107,7 @@ class MainNavigationScreen extends StatelessWidget {
               ),
               child: Icon(
                 icon,
-                size: 60,
+                size: 40,
                 color: Colors.white,
               ),
             ),
@@ -123,11 +116,20 @@ class MainNavigationScreen extends StatelessWidget {
                 child: Text(
                   title,
                   style: TextStyle(
-                    fontSize: 24,
+                    fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),
+              ),
+            ),
+            Container(
+              width: 100,
+              height: 80,
+              child: Icon(
+                Icons.arrow_forward_ios_rounded,
+                size: 40,
+                color: Colors.white,
               ),
             ),
           ],

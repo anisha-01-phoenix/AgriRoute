@@ -34,8 +34,6 @@ class _SplashScreenState extends State<SplashScreen> {
           image: DecorationImage(
             image: AssetImage('assets/home.png'),
             fit: BoxFit.cover,
-            colorFilter: ColorFilter.mode(
-                Colors.black.withOpacity(0.6), BlendMode.dstATop),
           ),
         ),
         padding: const EdgeInsets.all(40.0),

@@ -9,8 +9,8 @@ class FarmScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Farms in Jharkhand'),
-        backgroundColor: Colors.green[700],
+        title: Text('Farms', style: TextStyle(color: Colors.white),),
+        backgroundColor: Colors.orange[700],
         centerTitle: true,
         elevation: 4,
       ),
