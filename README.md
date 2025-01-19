@@ -8,6 +8,8 @@
   <a href="https://drive.google.com/file/d/1a_D3M7EBsd2LC6t7RZRiMn-tb65_w3uu/view?usp=sharing">Download App from here</a>
 </p>
 
+#### [API Github Link here](https://github.com/Dev-wizzychat/project_2.git)
+#### [API Deploy Link here](https://project-2-mj2y.onrender.com)
 
 ## Overview
 
