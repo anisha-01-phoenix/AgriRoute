@@ -1,3 +1,9 @@
+import 'dart:math';
+
+import 'package:agro_route/constants/distribution_constants.dart';
+import 'package:agro_route/constants/farm_constants.dart';
+import 'package:agro_route/constants/storage_constants.dart';
+import 'package:agro_route/constants/vehicle_constants.dart';
 import 'package:agro_route/screens/visualizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -135,7 +141,29 @@ class _StartingScreenState extends State<StartingScreen> {
                   Navigator.of(context).pop(); // Close drawer
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => VisualizationsScreen(data: dataset)), // Navigate to DatasetScreen
+                    MaterialPageRoute(builder: (context) => VisualizationsScreen(data: List.generate(5, (index) {
+                      Random random = Random();
+                      return Dataset(
+                        farm: farmList[random.nextInt(farmList.length)],
+                        storageHub: storageHubList[random.nextInt(storageHubList.length)],
+                        distributionCentre: distributionCenterList[random.nextInt(distributionCenterList.length)],
+                        vehicleType: vehicleTypes[random.nextInt(2)],
+                        smallVehicleCapacity: random.nextDouble() * 10 + 5,
+                        largeVehicleCapacity: random.nextDouble() * 20 + 10,
+                        perishabilityRate: random.nextDouble() * 0.1,
+                        demandLevel: random.nextDouble() * 500 + 100,
+                        trafficDisruption: random.nextDouble() * 10,
+                        totalCostGreedy: random.nextDouble() * 100,
+                        totalCostLP: random.nextDouble() * 100,
+                        totalCostOurAlgo: random.nextDouble() * 100,
+                        spoilageRateGreedy: random.nextDouble() * 100,
+                        spoilageRateLP: random.nextDouble() * 100,
+                        spoilageRateOurAlgo: random.nextDouble() * 100,
+                        timeGreedy: random.nextDouble() * 100,
+                        timeLP: random.nextDouble() * 100,
+                        timeOurAlgo: random.nextDouble() * 100,
+                      );
+                    }),)), // Navigate to DatasetScreen
                   );
                 },
               ),

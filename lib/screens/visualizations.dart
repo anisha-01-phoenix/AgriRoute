@@ -10,7 +10,7 @@ class VisualizationsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Random random = Random(); // Create a random number generator
+    Random random = Random();
 
     // Helper function to ensure valid values (not NaN or Infinity)
     double ensureValidValue(double? value, {double fallback = 0.0}) {
@@ -34,186 +34,189 @@ class VisualizationsScreen extends StatelessWidget {
             Text('Total Cost Comparison',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             SizedBox(height: 10),
-            BarChart(
-              BarChartData(
-                alignment: BarChartAlignment.spaceEvenly,
-                barGroups: data.asMap().entries.map((entry) {
-                  int index = entry.key;
-                  Dataset dataset = entry.value;
+            SizedBox(
+              height: 300, // Specify a height for the chart
+              child: BarChart(
+                BarChartData(
+                  alignment: BarChartAlignment.spaceEvenly,
+                  barGroups: data.asMap().entries.map((entry) {
+                    int index = entry.key;
+                    Dataset dataset = entry.value;
 
-                  // Use ensureValidValue to avoid NaN or Infinity values
-                  double totalCostGreedy = ensureValidValue(dataset.totalCostGreedy);
-                  double totalCostLP = ensureValidValue(dataset.totalCostLP);
-                  double totalCostOurAlgo = ensureValidValue(dataset.totalCostOurAlgo);
+                    double totalCostGreedy = ensureValidValue(dataset.totalCostGreedy);
+                    double totalCostLP = ensureValidValue(dataset.totalCostLP);
+                    double totalCostOurAlgo = ensureValidValue(dataset.totalCostOurAlgo);
 
-                  return BarChartGroupData(
-                    x: index,
-                    barRods: [
-                      BarChartRodData(
-                        toY: totalCostGreedy,
-                        color: Colors.red,
-                        width: 12,
+                    return BarChartGroupData(
+                      x: index,
+                      barRods: [
+                        BarChartRodData(
+                          toY: totalCostGreedy,
+                          color: Colors.red,
+                          width: 12,
+                        ),
+                        BarChartRodData(
+                          toY: totalCostLP,
+                          color: Colors.blue,
+                          width: 12,
+                        ),
+                        BarChartRodData(
+                          toY: totalCostOurAlgo,
+                          color: Colors.green,
+                          width: 12,
+                        ),
+                      ],
+                    );
+                  }).toList(),
+                  titlesData: FlTitlesData(
+                    show: true,
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        getTitlesWidget: (double value, TitleMeta meta) {
+                          return Text('Data ${value.toInt()}');
+                        },
                       ),
-                      BarChartRodData(
-                        toY: totalCostLP,
-                        color: Colors.blue,
-                        width: 12,
+                    ),
+                    leftTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        reservedSize: 30,
+                        getTitlesWidget: (double value, TitleMeta meta) {
+                          return Text(value.toString());
+                        },
                       ),
-                      BarChartRodData(
-                        toY: totalCostOurAlgo,
-                        color: Colors.green,
-                        width: 12,
-                      ),
-                    ],
-                  );
-                }).toList(),
-                titlesData: FlTitlesData(
-                  show: true,
-                  bottomTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                      showTitles: true,
-                      getTitlesWidget: (double value, TitleMeta meta) {
-                        return Text(
-                            'Data ${value.toInt()}'); // Custom label for the bottom axis
-                      },
                     ),
                   ),
-                  leftTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                      showTitles: true,
-                      reservedSize: 30,
-                      getTitlesWidget: (double value, TitleMeta meta) {
-                        return Text(value.toString());
-                      },
-                    ),
-                  ),
+                  gridData: FlGridData(show: true),
+                  borderData: FlBorderData(show: true),
                 ),
-                gridData: FlGridData(show: true),
-                borderData: FlBorderData(show: true),
               ),
             ),
             SizedBox(height: 30),
             Text('Spoilage Rate Comparison',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             SizedBox(height: 10),
-            BarChart(
-              BarChartData(
-                alignment: BarChartAlignment.spaceEvenly,
-                barGroups: data.asMap().entries.map((entry) {
-                  int index = entry.key;
-                  Dataset dataset = entry.value;
+            SizedBox(
+              height: 300, // Specify a height for the chart
+              child: BarChart(
+                BarChartData(
+                  alignment: BarChartAlignment.spaceEvenly,
+                  barGroups: data.asMap().entries.map((entry) {
+                    int index = entry.key;
+                    Dataset dataset = entry.value;
 
-                  // Use ensureValidValue to avoid NaN or Infinity values
-                  double spoilageRateGreedy = ensureValidValue(dataset.spoilageRateGreedy);
-                  double spoilageRateLP = ensureValidValue(dataset.spoilageRateLP);
-                  double spoilageRateOurAlgo = ensureValidValue(dataset.spoilageRateOurAlgo);
+                    double spoilageRateGreedy = ensureValidValue(dataset.spoilageRateGreedy);
+                    double spoilageRateLP = ensureValidValue(dataset.spoilageRateLP);
+                    double spoilageRateOurAlgo = ensureValidValue(dataset.spoilageRateOurAlgo);
 
-                  return BarChartGroupData(
-                    x: index,
-                    barRods: [
-                      BarChartRodData(
-                        toY: spoilageRateGreedy,
-                        color: Colors.red,
-                        width: 12,
+                    return BarChartGroupData(
+                      x: index,
+                      barRods: [
+                        BarChartRodData(
+                          toY: spoilageRateGreedy,
+                          color: Colors.red,
+                          width: 12,
+                        ),
+                        BarChartRodData(
+                          toY: spoilageRateLP,
+                          color: Colors.blue,
+                          width: 12,
+                        ),
+                        BarChartRodData(
+                          toY: spoilageRateOurAlgo,
+                          color: Colors.green,
+                          width: 12,
+                        ),
+                      ],
+                    );
+                  }).toList(),
+                  titlesData: FlTitlesData(
+                    show: true,
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        getTitlesWidget: (double value, TitleMeta meta) {
+                          return Text('Data ${value.toInt()}');
+                        },
                       ),
-                      BarChartRodData(
-                        toY: spoilageRateLP,
-                        color: Colors.blue,
-                        width: 12,
+                    ),
+                    leftTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        reservedSize: 30,
+                        getTitlesWidget: (double value, TitleMeta meta) {
+                          return Text(value.toString());
+                        },
                       ),
-                      BarChartRodData(
-                        toY: spoilageRateOurAlgo,
-                        color: Colors.green,
-                        width: 12,
-                      ),
-                    ],
-                  );
-                }).toList(),
-                titlesData: FlTitlesData(
-                  show: true,
-                  bottomTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                      showTitles: true,
-                      getTitlesWidget: (double value, TitleMeta meta) {
-                        return Text(
-                            'Data ${value.toInt()}'); // Custom label for the bottom axis
-                      },
                     ),
                   ),
-                  leftTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                      showTitles: true,
-                      reservedSize: 30,
-                      getTitlesWidget: (double value, TitleMeta meta) {
-                        return Text(value.toString());
-                      },
-                    ),
-                  ),
+                  gridData: FlGridData(show: true),
+                  borderData: FlBorderData(show: true),
                 ),
-                gridData: FlGridData(show: true),
-                borderData: FlBorderData(show: true),
               ),
             ),
             SizedBox(height: 30),
             Text('Time Comparison',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             SizedBox(height: 10),
-            BarChart(
-              BarChartData(
-                alignment: BarChartAlignment.spaceEvenly,
-                barGroups: data.asMap().entries.map((entry) {
-                  int index = entry.key;
-                  Dataset dataset = entry.value;
+            SizedBox(
+              height: 300, // Specify a height for the chart
+              child: BarChart(
+                BarChartData(
+                  alignment: BarChartAlignment.spaceEvenly,
+                  barGroups: data.asMap().entries.map((entry) {
+                    int index = entry.key;
+                    Dataset dataset = entry.value;
 
-                  // Use ensureValidValue to avoid NaN or Infinity values
-                  double timeGreedy = ensureValidValue(dataset.timeGreedy);
-                  double timeLP = ensureValidValue(dataset.timeLP);
-                  double timeOurAlgo = ensureValidValue(dataset.timeOurAlgo);
+                    double timeGreedy = ensureValidValue(dataset.timeGreedy);
+                    double timeLP = ensureValidValue(dataset.timeLP);
+                    double timeOurAlgo = ensureValidValue(dataset.timeOurAlgo);
 
-                  return BarChartGroupData(
-                    x: index,
-                    barRods: [
-                      BarChartRodData(
-                        toY: timeGreedy,
-                        color: Colors.red,
-                        width: 12,
+                    return BarChartGroupData(
+                      x: index,
+                      barRods: [
+                        BarChartRodData(
+                          toY: timeGreedy,
+                          color: Colors.red,
+                          width: 12,
+                        ),
+                        BarChartRodData(
+                          toY: timeLP,
+                          color: Colors.blue,
+                          width: 12,
+                        ),
+                        BarChartRodData(
+                          toY: timeOurAlgo,
+                          color: Colors.green,
+                          width: 12,
+                        ),
+                      ],
+                    );
+                  }).toList(),
+                  titlesData: FlTitlesData(
+                    show: true,
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        getTitlesWidget: (double value, TitleMeta meta) {
+                          return Text('Data ${value.toInt()}');
+                        },
                       ),
-                      BarChartRodData(
-                        toY: timeLP,
-                        color: Colors.blue,
-                        width: 12,
+                    ),
+                    leftTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        reservedSize: 30,
+                        getTitlesWidget: (double value, TitleMeta meta) {
+                          return Text(value.toString());
+                        },
                       ),
-                      BarChartRodData(
-                        toY: timeOurAlgo,
-                        color: Colors.green,
-                        width: 12,
-                      ),
-                    ],
-                  );
-                }).toList(),
-                titlesData: FlTitlesData(
-                  show: true,
-                  bottomTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                      showTitles: true,
-                      getTitlesWidget: (double value, TitleMeta meta) {
-                        return Text(
-                            'Data ${value.toInt()}'); // Custom label for the bottom axis
-                      },
                     ),
                   ),
-                  leftTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                      showTitles: true,
-                      reservedSize: 30,
-                      getTitlesWidget: (double value, TitleMeta meta) {
-                        return Text(value.toString());
-                      },
-                    ),
-                  ),
+                  gridData: FlGridData(show: true),
+                  borderData: FlBorderData(show: true),
                 ),
-                gridData: FlGridData(show: true),
-                borderData: FlBorderData(show: true),
               ),
             ),
           ],
