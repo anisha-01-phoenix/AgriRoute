@@ -84,7 +84,11 @@ The goal is to determine the optimal transportation route, storage hub, and dist
 - **Time Complexity Reduction**:  
   By breaking down the problem into two separate shortest path calculations (hub to farm and hub to distribution center), we reduce the time complexity to **O(n²)**, making it computationally efficient.
 
-
+**🚀 Summary**
+✅ Break the problem into two shortest path calculations (Farm → Hub & Hub → Distribution Center).
+✅ Account for traffic delays and perishability rates in cost calculations.
+✅ Convert multi-objective optimization into a single-cost minimization problem for efficiency.
+✅ Find the optimal hub, route, and distribution center while ensuring minimum cost, maximum profit, and minimum time.
 
 ## 2. Simulation and Dataset Generator  
 <img src="https://github.com/user-attachments/assets/138e61a5-f4d5-486c-8579-153f802ae706" width="250" height="500">
