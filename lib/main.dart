@@ -1,9 +1,14 @@
 import 'package:agro_route/screens/splash_screen.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
+import 'models/data_model.dart';
+
+void main() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter(DatasetAdapter()); // Register the adapter
+  await Hive.openBox<Dataset>('datasetBox'); // Open a box to store data
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

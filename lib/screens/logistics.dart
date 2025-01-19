@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:csv/csv.dart';
-import 'package:excel/excel.dart';
+import 'dataset_screen.dart'; // Import the new screen
 import '../constants/distribution_constants.dart';
 import '../constants/farm_constants.dart';
 import '../constants/storage_constants.dart';
@@ -25,6 +24,9 @@ class _LogisticsScreenState extends State<LogisticsScreen> {
   double _demandLevel = 0;
   double _trafficDisruption = 0;
 
+  // To track the loading state
+  bool _isLoading = false;
+
   // Store data locally
   Future<void> _saveData() async {
     final prefs = await SharedPreferences.getInstance();
@@ -39,76 +41,31 @@ class _LogisticsScreenState extends State<LogisticsScreen> {
     prefs.setDouble('trafficDisruption', _trafficDisruption);
   }
 
-  // Retrieve data from local storage
-  Future<Map<String, dynamic>> _getData() async {
-    final prefs = await SharedPreferences.getInstance();
-    return {
-      'farm': prefs.getString('farm') ?? '',
-      'storageHub': prefs.getString('storageHub') ?? '',
-      'distributionCentre': prefs.getString('distributionCentre') ?? '',
-      'vehicleType': prefs.getString('vehicleType') ?? '',
-      'smallVehicleCapacity': prefs.getDouble('smallVehicleCapacity') ?? 0,
-      'largeVehicleCapacity': prefs.getDouble('largeVehicleCapacity') ?? 0,
-      'perishabilityRate': prefs.getDouble('perishabilityRate') ?? 0,
-      'demandLevel': prefs.getDouble('demandLevel') ?? 0,
-      'trafficDisruption': prefs.getDouble('trafficDisruption') ?? 0,
-    };
-  }
-
-  // Generate CSV
-  String _generateCSV(Map<String, dynamic> data) {
-    List<List<dynamic>> rows = [];
-    rows.add(['Farm', 'Storage Hub', 'Distribution Centre', 'Vehicle Type', 'Small Vehicle Capacity', 'Large Vehicle Capacity', 'Perishability Rate', 'Demand Level', 'Traffic Disruption']);
-    rows.add([
-      data['farm'],
-      data['storageHub'],
-      data['distributionCentre'],
-      data['vehicleType'],
-      data['smallVehicleCapacity'],
-      data['largeVehicleCapacity'],
-      data['perishabilityRate'],
-      data['demandLevel'],
-      data['trafficDisruption'],
-    ]);
-    return const ListToCsvConverter().convert(rows);
-  }
-
-  // Export to Excel
-  Future<void> _exportToExcel(Map<String, dynamic> data) async {
-    var excel = Excel.createExcel();
-    Sheet sheet = excel['Sheet1'];
-    sheet.appendRow([
-      data['farm'],
-      data['storageHub'],
-      data['distributionCentre'],
-      data['vehicleType'],
-      data['smallVehicleCapacity'],
-      data['largeVehicleCapacity'],
-      data['perishabilityRate'],
-      data['demandLevel'],
-      data['trafficDisruption'],
-    ]);
-    // You can implement saving the file to disk here
-    print('Excel generated');
-  }
-
-  // Export to CSV
-  Future<void> _exportToCSV(Map<String, dynamic> data) async {
-    String csv = _generateCSV(data);
-    // Here you can implement code to save or share the CSV file (e.g., using path_provider, share_plus)
-    print(csv);  // For testing
-  }
-
-  // To track button color state
-  bool _isButtonPressed = false;
-
   @override
   void initState() {
     super.initState();
   }
 
   Future<void> _proceed() async {
-    // Logic to handle the proceed action
+    setState(() {
+      _isLoading = true; // Show the progress indicator
+    });
+
+    // Save the data locally
+    await _saveData();
+
+    setState(() {
+      _isLoading = false; // Hide the progress indicator
+    });
+
+    // Show a confirmation message
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Data has been saved successfully!'),
+        backgroundColor: Colors.green,
+      ),
+    );
+
     print("Proceeding with the following details:");
     print("Farm: $_selectedFarm");
     print("Storage Hub: $_selectedStorageHub");
@@ -119,8 +76,6 @@ class _LogisticsScreenState extends State<LogisticsScreen> {
     print("Perishability Rate: $_perishabilityRate");
     print("Demand Level: $_demandLevel");
     print("Traffic Disruption: $_trafficDisruption");
-
-    // Show a confirmation dialog or navigate to the next screen
   }
 
   @override
@@ -129,40 +84,10 @@ class _LogisticsScreenState extends State<LogisticsScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          Map<String, dynamic> data = await _getData();
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text('Dataset'),
-                content: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      for (var entry in data.entries)
-                        Text('${entry.key}: ${entry.value}'),
-                    ],
-                  ),
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: Text('Close'),
-                  ),
-                  TextButton(
-                    onPressed: () async {
-                      await _exportToCSV(data);
-                    },
-                    child: Text('Export to CSV'),
-                  ),
-                  TextButton(
-                    onPressed: () async {
-                      await _exportToExcel(data);
-                    },
-                    child: Text('Export to Excel'),
-                  ),
-                ],
-              );
-            },
+          // Open the Dataset Screen
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => DatasetScreen()),
           );
         },
         child: Icon(Icons.storage),
@@ -177,7 +102,10 @@ class _LogisticsScreenState extends State<LogisticsScreen> {
               DropdownButtonFormField<String>(
                 decoration: InputDecoration(
                   labelText: 'Farm Location',
-                  labelStyle: TextStyle(color: Colors.orange, fontWeight: FontWeight.w700, fontSize: 16),
+                  labelStyle: TextStyle(
+                      color: Colors.orange,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16),
                   prefixIcon: Icon(Icons.location_on),
                   border: OutlineInputBorder(),
                 ),
@@ -200,7 +128,10 @@ class _LogisticsScreenState extends State<LogisticsScreen> {
               DropdownButtonFormField<String>(
                 decoration: InputDecoration(
                   labelText: 'Storage Hub',
-                  labelStyle: TextStyle(color: Colors.orange, fontWeight: FontWeight.w700, fontSize: 16),
+                  labelStyle: TextStyle(
+                      color: Colors.orange,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16),
                   prefixIcon: Icon(Icons.store),
                   border: OutlineInputBorder(),
                 ),
@@ -223,7 +154,10 @@ class _LogisticsScreenState extends State<LogisticsScreen> {
               DropdownButtonFormField<String>(
                 decoration: InputDecoration(
                   labelText: 'Distribution Centre',
-                  labelStyle: TextStyle(color: Colors.orange, fontWeight: FontWeight.w700, fontSize: 16),
+                  labelStyle: TextStyle(
+                      color: Colors.orange,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16),
                   prefixIcon: Icon(Icons.local_shipping),
                   border: OutlineInputBorder(),
                 ),
@@ -246,7 +180,10 @@ class _LogisticsScreenState extends State<LogisticsScreen> {
               DropdownButtonFormField<String>(
                 decoration: InputDecoration(
                   labelText: 'Vehicle Type',
-                  labelStyle: TextStyle(color: Colors.orange, fontWeight: FontWeight.w700, fontSize: 16),
+                  labelStyle: TextStyle(
+                      color: Colors.orange,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16),
                   prefixIcon: Icon(Icons.directions_car),
                   border: OutlineInputBorder(),
                 ),
@@ -266,7 +203,10 @@ class _LogisticsScreenState extends State<LogisticsScreen> {
               SizedBox(height: 16),
 
               // Small Vehicle Capacity Slider
-              Text("Small Vehicle Capacity: ${_smallVehicleCapacity.toStringAsFixed(0)} kg", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700)),
+              Text(
+                  "Small Vehicle Capacity: ${_smallVehicleCapacity.toStringAsFixed(0)} kg",
+                  style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.w700)),
               Slider(
                 value: _smallVehicleCapacity,
                 min: 0,
@@ -282,7 +222,10 @@ class _LogisticsScreenState extends State<LogisticsScreen> {
               SizedBox(height: 16),
 
               // Large Vehicle Capacity Slider
-              Text("Large Vehicle Capacity: ${_largeVehicleCapacity.toStringAsFixed(0)} kg", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700)),
+              Text(
+                  "Large Vehicle Capacity: ${_largeVehicleCapacity.toStringAsFixed(0)} kg",
+                  style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.w700)),
               Slider(
                 value: _largeVehicleCapacity,
                 min: 0,
@@ -298,7 +241,10 @@ class _LogisticsScreenState extends State<LogisticsScreen> {
               SizedBox(height: 16),
 
               // Perishability Rate Slider
-              Text("Perishability Rate: ${_perishabilityRate.toStringAsFixed(1)} days", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700)),
+              Text(
+                  "Perishability Rate: ${_perishabilityRate.toStringAsFixed(1)} days",
+                  style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.w700)),
               Slider(
                 value: _perishabilityRate,
                 min: 0,
@@ -314,7 +260,9 @@ class _LogisticsScreenState extends State<LogisticsScreen> {
               SizedBox(height: 16),
 
               // Demand Level Slider
-              Text("Demand Level: ${_demandLevel.toStringAsFixed(0)}", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700)),
+              Text("Demand Level: ${_demandLevel.toStringAsFixed(0)}",
+                  style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.w700)),
               Slider(
                 value: _demandLevel,
                 min: 0,
@@ -330,7 +278,10 @@ class _LogisticsScreenState extends State<LogisticsScreen> {
               SizedBox(height: 16),
 
               // Traffic Disruption Slider
-              Text("Traffic Disruption: ${_trafficDisruption.toStringAsFixed(1)}%", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700)),
+              Text(
+                  "Traffic Disruption: ${_trafficDisruption.toStringAsFixed(1)}%",
+                  style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.w700)),
               Slider(
                 value: _trafficDisruption,
                 min: 0,
@@ -353,7 +304,7 @@ class _LogisticsScreenState extends State<LogisticsScreen> {
                   child: Container(
                     height: 50,
                     decoration: BoxDecoration(
-                      color: _isButtonPressed ? Colors.orangeAccent : Colors.orange,
+                      color: Colors.orange,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Center(
@@ -370,6 +321,12 @@ class _LogisticsScreenState extends State<LogisticsScreen> {
                 ),
               ),
               SizedBox(height: 16),
+
+              // Show progress indicator if loading
+              if (_isLoading)
+                Center(
+                  child: CircularProgressIndicator(),
+                ),
             ],
           ),
         ),

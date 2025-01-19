@@ -1,11 +1,14 @@
-import 'package:agro_route/screens/farmer_screen.dart';
-import 'package:agro_route/screens/logistics.dart';
+import 'package:agro_route/screens/visualizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:agro_route/screens/farmer_screen.dart';
+import 'package:agro_route/screens/logistics.dart';
+import 'package:agro_route/screens/dataset_screen.dart'; // Import DatasetScreen
+import 'package:agro_route/screens/navigation_farms_page.dart';
+import 'package:hive/hive.dart';
+import '../models/data_model.dart';
 import '../widgets/styled_text.dart';
-import 'navigation_farms_page.dart';
 
 class StartingScreen extends StatefulWidget {
   const StartingScreen({super.key});
@@ -15,7 +18,6 @@ class StartingScreen extends StatefulWidget {
 }
 
 class _StartingScreenState extends State<StartingScreen> {
-
   String? _selectedItem = "";
   final List<Widget> _pages = [
     FarmerScreen(),
@@ -33,6 +35,12 @@ class _StartingScreenState extends State<StartingScreen> {
     setState(() {
       _currentIndex = index;
     });
+  }
+
+
+  Future<List<Dataset>> fetchDataFromHive() async {
+    var box = await Hive.openBox<Dataset>('datasetBox');
+    return box.values.toList();
   }
 
   Future<bool> _showExitConfirmationDialog(BuildContext context) async {
@@ -91,12 +99,54 @@ class _StartingScreenState extends State<StartingScreen> {
         return shouldExit;
       },
       child: Scaffold(
-        // drawer: NavDrawer(),
+        // Drawer with app logo and menu options
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              // App logo header
+              UserAccountsDrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.orange,
+                ),
+                currentAccountPicture: CircleAvatar(
+                  backgroundImage: AssetImage('assets/logo.png'), // Your logo image
+                ),
+                accountName: Text('AgriRoute', style: TextStyle(color: Colors.white)), accountEmail: null,
+              ),
+              // Menu options
+              ListTile(
+                leading: Icon(Icons.dataset),
+                title: Text('Dataset'),
+                onTap: () {
+                  Navigator.of(context).pop(); // Close drawer
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DatasetScreen()), // Navigate to DatasetScreen
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.auto_graph_outlined),
+                title: Text('Visualizations'),
+                onTap: () async {
+                  // Handle Visualizations navigation
+                  List<Dataset> dataset = await fetchDataFromHive();
+                  Navigator.of(context).pop(); // Close drawer
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => VisualizationsScreen(data: dataset)), // Navigate to DatasetScreen
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
         appBar: AppBar(
           backgroundColor: Colors.orange,
           title: Styled_Text(text: 'AgriRoute', color: Colors.white, size: 18, fontWeight: FontWeight.w600),
         ),
-        body:  _pages[_currentIndex],
+        body: _pages[_currentIndex],
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           backgroundColor: Colors.orange,
