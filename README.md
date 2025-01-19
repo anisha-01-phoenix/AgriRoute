@@ -8,9 +8,86 @@ Agriculture supply chains involve various stages from farm to distribution, ofte
 
 [Optimisation Algorithm Code Links](https://github.com/anisha-01-phoenix/AgriRoute/blob/bbc9960e6795763076f3b50b58c2a60e5667ec63/Optimization_Algo)
 
-The objective is to determine the optimal transportation route, storage hub, and distribution center for farm produce while minimizing costs, maximizing profit, and minimizing time. The transportation process must pass through one hub before reaching a distribution center, with hub selection based on capacity constraints and cost considerations. Two types of vehicles are available, each differing in rental cost, speed, and capacity. Distribution centers have specific demand constraints and delivery deadlines that must be met. Additionally, traffic congestion on routes may cause delays, impacting delivery time and reducing the crop’s market value due to perishability. The perishability rate directly affects the selling price, making timely delivery crucial. The challenge is to identify the best combination of route, hub, and distribution center while optimizing total cost, maximizing profit, and minimizing transportation time.
+The goal is to determine the optimal transportation route, storage hub, and distribution center while minimizing costs, maximizing profit, and minimizing time. The transportation process must pass through one hub before reaching a distribution center. Below is the structured approach to solve this multi-objective problem.
 
-**Approach** :- First, To reduce time complexity, we first select a hub and determine the shortest path between that hub and the most suitable farm while optimizing for minimum cost, minimum time, and maximum profit. Once this optimal path is identified, we then find the shortest path from the same hub to the all distribution center based on the same optimization criteria. By breaking the problem into two separate shortest path computations—one between the hub and the farm, and the other between the hub and the distribution center—we effectively reduce the overall time complexity to \( n^2 + n^2 = n^2 \), significantly improving computational efficiency. To optimize cost, time, and profit simultaneously, we establish a relationship between time, perishability rate, cost, and profit. While determining the shortest path, we calculate the transportation cost for each edge based on the selected vehicle using the formula: **cost = distance × rent**. Using the distance and vehicle speed, we determine the normal travel time. To account for traffic delays, we compute the additional time required on a given route to reach a specific distribution center. The total time is then used to calculate the percentage of crop spoilage based on the perishability rate. By multiplying this spoiled percentage with the crop's selling price at the distribution center, we determine the **extra monetary loss** due to spoilage. This approach effectively transforms our multi-objective problem of minimizing both time and cost into a **single-factor cost minimization problem**, making it computationally easier to determine the most optimal path.
+### Step 1: Select Hub and Farm
+- **Objective**: Select a hub and determine the shortest path between that hub and the farm.
+- **Optimization Criteria**:
+  - **Minimize cost**  
+  - **Minimize time**  
+  - **Maximize profit**
+  
+- **Method**:  
+  1. Identify the **most suitable farm**.
+  2. Choose the **optimal hub** based on capacity and cost considerations.
+
+#### Result:
+- This step optimizes for **minimum cost, minimum time, and maximum profit** between the **hub** and the **farm**.
+
+---
+
+### Step 2: Shortest Path from Hub to Distribution Centers
+- **Objective**: Identify the shortest path from the chosen hub to all distribution centers.
+- **Optimization Criteria**:
+  - **Minimize cost**  
+  - **Minimize time**  
+  - **Maximize profit**
+  
+- **Method**:
+  1. Use the same hub from Step 1.
+  2. Calculate the **shortest path** from the hub to each **distribution center**.
+
+#### Result:
+- Optimization is performed based on the same criteria: **cost**, **time**, and **profit**.
+
+---
+
+### Step 3: Traffic Congestion and Delay Considerations
+- **Objective**: Account for traffic congestion that causes delays.
+- **Impact**:
+  - **Delivery time increases**  
+  - **Crop perishability rate increases**, reducing **market value**.
+  
+- **Method**:  
+  1. **Calculate travel time** based on vehicle speed and distance.
+  2. **Adjust for delays** caused by traffic congestion.
+  
+#### Result:
+- Time delays are factored into the total transportation time.
+
+---
+
+### Step 4: Perishability and Monetary Loss Calculation
+- **Objective**: Minimize spoilage and losses due to delays.
+- **Method**:  
+  1. Calculate **percentage of crop spoilage** based on the **perishability rate**.
+  2. Determine the **extra monetary loss** due to spoilage:
+     - `Monetary Loss = Spoiled Percentage × Selling Price at Distribution Center`
+
+#### Result:
+- **Extra monetary loss** is added to the overall cost to reflect spoilage.
+
+---
+
+### Step 5: Optimization and Final Decision
+- **Objective**: Solve the problem of minimizing time, cost, and spoilage loss by transforming it into a **single-factor cost minimization problem**.
+- **Approach**:
+  1. We solve for the most **optimal path** considering:
+     - **Transportation cost** = Distance × Vehicle Rental Cost
+     - **Time** (including delays due to traffic)
+     - **Spoilage loss**
+  
+- **Outcome**:  
+  - We identify the **optimal transportation route**, **hub**, and **distribution center**.
+  - **Final optimization goal**: Minimize overall cost, including transportation, spoilage, and time.
+
+---
+
+### Efficiency
+- **Time Complexity Reduction**:  
+  By breaking down the problem into two separate shortest path calculations (hub to farm and hub to distribution center), we reduce the time complexity to **O(n²)**, making it computationally efficient.
+
+
 
 ## 2. Simulation and Dataset Generator  
 <img src="https://github.com/user-attachments/assets/138e61a5-f4d5-486c-8579-153f802ae706" width="250" height="500">
