@@ -86,8 +86,11 @@ The goal is to determine the optimal transportation route, storage hub, and dist
 
 **🚀 Summary**
 ✅ Break the problem into two shortest path calculations (Farm → Hub & Hub → Distribution Center).
+
 ✅ Account for traffic delays and perishability rates in cost calculations.
+
 ✅ Convert multi-objective optimization into a single-cost minimization problem for efficiency.
+
 ✅ Find the optimal hub, route, and distribution center while ensuring minimum cost, maximum profit, and minimum time.
 
 ## 2. Simulation and Dataset Generator  
