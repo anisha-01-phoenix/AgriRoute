@@ -11,15 +11,12 @@ Agriculture supply chains involve various stages from farm to distribution, ofte
 The goal is to determine the optimal transportation route, storage hub, and distribution center while minimizing costs, maximizing profit, and minimizing time. The transportation process must pass through one hub before reaching a distribution center. Below is the structured approach to solve this multi-objective problem.
 
 ### Step 1: Select Hub and Farm
-- **Objective**: Select a hub and determine the shortest path between that hub and the farm.
+- **Objective**: Select a hub and determine the shortest path between that hub and the desired farm.
 - **Optimization Criteria**:
   - **Minimize cost**  
   - **Minimize time**  
   - **Maximize profit**
   
-- **Method**:  
-  1. Identify the **most suitable farm**.
-  2. Choose the **optimal hub** based on capacity and cost considerations.
 
 #### Result:
 - This step optimizes for **minimum cost, minimum time, and maximum profit** between the **hub** and the **farm**.
@@ -46,7 +43,7 @@ The goal is to determine the optimal transportation route, storage hub, and dist
 - **Objective**: Account for traffic congestion that causes delays.
 - **Impact**:
   - **Delivery time increases**  
-  - **Crop perishability rate increases**, reducing **market value**.
+  - **Crop perishability rate increases amount of spoiled crop**, reducing **market value**.
   
 - **Method**:  
   1. **Calculate travel time** based on vehicle speed and distance.
