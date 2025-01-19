@@ -109,9 +109,15 @@ The goal is to determine the optimal transportation route, storage hub, and dist
 ## 3. Algorithm Benchmarking and Performance Analysis  
 <img src="https://github.com/user-attachments/assets/19415f33-a827-453d-b5e0-769a9348fc49" width="250" height="500">
 
-## 4. Interactive Visualization Dashboard   
-<img src="https://github.com/user-attachments/assets/6b1b1a42-ee2b-41c2-9dce-2277079a82c7" width="250" height="500">  
+## 4. Interactive Visualization Dashboard    
 <img src="https://github.com/user-attachments/assets/8ff162a8-703d-4bc7-920a-1e09e87f49b4" width="250" height="500">  
 <img src="https://github.com/user-attachments/assets/39b79d62-1496-4b5d-b099-0c284f09a720" width="250" height="500">  
 <img src="https://github.com/user-attachments/assets/adcbcca6-6ac5-4b13-80a5-a60c8f67f2fd" width="250" height="500">
-<img src="https://github.com/user-attachments/assets/6e63a59d-987a-4c0f-a570-ac218ef34916" width="250" height="500">
+<img src="https://github.com/user-attachments/assets/0b074fd7-a8f6-4a65-998f-0b90f93483fb" width="250" height="500">
+<img src="https://github.com/user-attachments/assets/f0fa567c-07d6-4acd-b614-20fb9b8027b6" width="250" height="500">
+<img src="https://github.com/user-attachments/assets/865ef8e1-bebe-4950-ad81-75a8e95de2e8" width="250" height="500">
+<img src="https://github.com/user-attachments/assets/08450b85-a620-471e-b9c2-7dc0bba97fe1" width="250" height="500">
+<img src="https://github.com/user-attachments/assets/9184037a-62ef-4864-a782-8763804ff8e2" width="250" height="500">
+<img src="https://github.com/user-attachments/assets/ac2604a4-5c28-44c3-acc6-cc4e0f614941" width="250" height="500">
+
+
