@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../constants/crop_constants.dart';
 import 'dataset_screen.dart'; // Import the new screen
 import '../constants/distribution_constants.dart';
 import '../constants/farm_constants.dart';
@@ -16,6 +17,11 @@ class _LogisticsScreenState extends State<LogisticsScreen> {
   String? _selectedStorageHub;
   String? _selectedDistributionCentre;
   String? _selectedVehicleType;
+  List<String> _selectedCrops = [];
+
+  // New rate and deadline input fields
+  TextEditingController _rateController = TextEditingController();
+  TextEditingController _deadlineController = TextEditingController(); // Deadline field controller
 
   // Slider values
   double _smallVehicleCapacity = 0;
@@ -39,6 +45,8 @@ class _LogisticsScreenState extends State<LogisticsScreen> {
     prefs.setDouble('perishabilityRate', _perishabilityRate);
     prefs.setDouble('demandLevel', _demandLevel);
     prefs.setDouble('trafficDisruption', _trafficDisruption);
+    prefs.setString('rate', _rateController.text);  // Save rate value
+    prefs.setString('deadline', _deadlineController.text);  // Save deadline value
   }
 
   @override
@@ -58,14 +66,6 @@ class _LogisticsScreenState extends State<LogisticsScreen> {
       _isLoading = false; // Hide the progress indicator
     });
 
-    // Show a confirmation message
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Data has been saved successfully!'),
-        backgroundColor: Colors.green,
-      ),
-    );
-
     print("Proceeding with the following details:");
     print("Farm: $_selectedFarm");
     print("Storage Hub: $_selectedStorageHub");
@@ -76,6 +76,8 @@ class _LogisticsScreenState extends State<LogisticsScreen> {
     print("Perishability Rate: $_perishabilityRate");
     print("Demand Level: $_demandLevel");
     print("Traffic Disruption: $_trafficDisruption");
+    print("Rate: ${_rateController.text}");  // Print the rate value
+    print("Deadline: ${_deadlineController.text}");  // Print the deadline value
   }
 
   @override
@@ -120,6 +122,74 @@ class _LogisticsScreenState extends State<LogisticsScreen> {
                   setState(() {
                     _selectedFarm = value;
                   });
+                },
+              ),
+              SizedBox(height: 16),
+              // Crops Selection Dropdown
+              DropdownButtonFormField<String>(
+                decoration: InputDecoration(
+                  labelText: 'Select Crop',
+                  labelStyle: TextStyle(
+                    color: Colors.orange,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16,
+                  ),
+                  prefixIcon: Icon(Icons.nature_people_rounded),
+                  border: OutlineInputBorder(),
+                ),
+                value: _selectedCrops.isNotEmpty ? _selectedCrops.first : null, // Default value if crops are selected
+                items: cropList.map((crop) {
+                  return DropdownMenuItem<String>(
+                    value: crop,
+                    child: Text(crop),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    if (!_selectedCrops.contains(value)) {
+                      _selectedCrops.add(value!);  // Add crop to selected crops
+                    }
+                  });
+                },
+              ),
+              SizedBox(height: 16),
+
+              // Rate Text Input Box with Rupee Icon
+              TextFormField(
+                controller: _rateController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: 'Rate (₹)',
+                  labelStyle: TextStyle(
+                    color: Colors.orange,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16,
+                  ),
+                  prefixIcon: Icon(Icons.currency_rupee),
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (value) {
+                  // You can implement any logic on rate change if needed
+                },
+              ),
+              SizedBox(height: 16),
+
+              // Deadline Text Input Box (in hours)
+              TextFormField(
+                controller: _deadlineController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: 'Deadline (Hours)',
+                  labelStyle: TextStyle(
+                    color: Colors.orange,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16,
+                  ),
+                  prefixIcon: Icon(Icons.access_time),
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (value) {
+                  // You can implement any logic on deadline change if needed
                 },
               ),
               SizedBox(height: 16),

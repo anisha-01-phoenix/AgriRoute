@@ -32,29 +32,98 @@ class _FarmerScreenState extends State<FarmerScreen> {
   }
 
   Future<void> _saveDetails() async {
-    _showOptimizedResults(context, route: "Route A", cost: 500, time: "2h");
+    _showOptimizedResults(
+      context,
+      route: "Jamshedpur->Dhanbad->Bokaro",
+      cost: 500,
+      time: "2h",
+      vehicleType: "Large",
+      totalCost: 1200,
+      profit: 300,
+      distributionCenter: "Bokaro",
+      storageHub: "Dhanbad",
+      spoilage: 25,
+    );
   }
 
-  void _showOptimizedResults(BuildContext context, {required String route, required int cost, required String time}) {
+  void _showOptimizedResults(
+      BuildContext context, {
+        required String route,
+        required int cost,
+        required String time,
+        required String vehicleType,
+        required int totalCost,
+        required int profit,
+        required String distributionCenter,
+        required String storageHub,
+        required double spoilage,
+      }) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Optimal Route'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text("Route: $route"),
-            Text("Cost: ₹$cost"),
-            Text("Time: $time"),
-          ],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+        title: Text(
+          'Optimized Logistics Plan',
+          style: TextStyle(
+            color: Colors.orange,
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildInfoRow("Vehicle Type", vehicleType, Icons.directions_car),
+              SizedBox(height: 10),
+              _buildInfoRow("Total Cost", "₹$totalCost", Icons.attach_money),
+              SizedBox(height: 10),
+              _buildInfoRow("Profit", "₹$profit", Icons.account_balance_wallet),
+              SizedBox(height: 10),
+              _buildInfoRow("Distribution Center", distributionCenter, Icons.local_shipping),
+              SizedBox(height: 10),
+              _buildInfoRow("Storage Hub", storageHub, Icons.store),
+              SizedBox(height: 10),
+              _buildInfoRow("Spoilage (in kg)", "${spoilage.toStringAsFixed(2)}%", Icons.warning),
+              SizedBox(height: 10),
+              _buildInfoRow("Route", route, Icons.map),
+              SizedBox(height: 10),
+              _buildInfoRow("Time", time, Icons.access_time),
+            ],
+          ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Close'),
+            child: Text('Close', style: TextStyle(color: Colors.orange)),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildInfoRow(String label, String value, IconData icon) {
+    return Row(
+      children: [
+        Icon(
+          icon,
+          color: Colors.orange,
+          size: 24,
+        ),
+        SizedBox(width: 10),
+        Expanded(
+          child: Text(
+            "$label: $value",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -158,7 +227,7 @@ class _FarmerScreenState extends State<FarmerScreen> {
                           controller: _perishabilityControllers.putIfAbsent(crop, () => TextEditingController()),
                           decoration: InputDecoration(
                             icon: Icon(Icons.timelapse),
-                            labelText: 'Perishability of $crop (in days)',
+                            labelText: 'Perishability of $crop (in hours)',
                             border: InputBorder.none,
                           ),
                         ),
@@ -277,6 +346,66 @@ class _FarmerScreenState extends State<FarmerScreen> {
                         decoration: InputDecoration(
                           icon: Icon(Icons.directions_car_outlined),
                           labelText: 'Big Vehicle Capacity (kg)',
+                          border: InputBorder.none,
+                        ),
+                        keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          setState(() {
+                            _vehicleDetails['big']['capacity'] = int.tryParse(value) ?? 0;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 16),
+              Styled_Text(
+                text: 'Vehicle Rent (Rs./km):',
+                color: Colors.orange,
+                size: 16,
+                fontWeight: FontWeight.w700,
+              ),
+              SizedBox(height: 8),
+              Row(
+                children: [
+                  // Small Vehicle Rent Input
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          icon: Icon(Icons.directions_car),
+                          labelText: 'Small Vehicle Rent ',
+                          border: InputBorder.none,
+                        ),
+                        keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          setState(() {
+                            _vehicleDetails['small']['capacity'] = int.tryParse(value) ?? 0;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 16), // Space between the two input fields
+
+                  // Big Vehicle Rent Input
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          icon: Icon(Icons.directions_car_outlined),
+                          labelText: 'Big Vehicle Rent',
                           border: InputBorder.none,
                         ),
                         keyboardType: TextInputType.number,
