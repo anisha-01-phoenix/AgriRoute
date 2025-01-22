@@ -1,0 +1,92 @@
+{
+    "vehicles": [{
+            "type": 1,
+            "rent": 5.0,
+            "capacity": 50,
+            "speed": 30
+        },
+        {
+            "type": 2,
+            "rent": 8.0,
+            "capacity": 80,
+            "speed": 25
+        }
+    ],
+    "farm": [{
+        "id": 5,
+        "crop": "corn",
+        "perish_rate": 0.002,
+        "quantity": 1000
+    }],
+    "centers": [{
+            "id": 66,
+            "crop": "corn",
+            "demand": 11000,
+            "rate": 300,
+            "deadline": 120
+        },
+        {
+            "id": 67,
+            "crop": "corn",
+            "demand": 10000,
+            "rate": 500,
+            "deadline": 120
+        },
+        {
+            "id": 68,
+            "crop": "wheat",
+            "demand": 8000,
+            "rate": 200,
+            "deadline": 100
+        },
+        {
+            "id": 69,
+            "crop": "corn",
+            "demand": 9000,
+            "rate": 400,
+            "deadline": 110
+        },
+        {
+            "id": 70,
+            "crop": "rice",
+            "demand": 7000,
+            "rate": 250,
+            "deadline": 95
+        },
+        {
+            "id": 71,
+            "crop": "corn",
+            "demand": 6000,
+            "rate": 300,
+            "deadline": 105
+        },
+        {
+            "id": 72,
+            "crop": "corn",
+            "demand": 5000,
+            "rate": 350,
+            "deadline": 90
+        },
+        {
+            "id": 73,
+            "crop": "soybean",
+            "demand": 4000,
+            "rate": 150,
+            "deadline": 80
+        },
+        {
+            "id": 74,
+            "crop": "corn",
+            "demand": 4500,
+            "rate": 320,
+            "deadline": 85
+        },
+        {
+            "id": 75,
+            "crop": "barley",
+            "demand": 3000,
+            "rate": 100,
+            "deadline": 75
+        }
+    ]
+}
