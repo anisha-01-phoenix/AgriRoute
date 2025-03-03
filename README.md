@@ -93,7 +93,7 @@ The goal is to determine the optimal transportation route, storage hub, and dist
 
 ### Efficiency
 - **Time Complexity Reduction**:  
-  By breaking down the problem into two separate shortest path calculations (hub to farm and hub to distribution center), we reduce the time complexity to **O(n²)**, making it computationally efficient.
+  By breaking down the problem into two separate shortest path calculations (hub to farm and hub to distribution center), we reduce the time complexity to **O(n²logn)**, making it computationally efficient.
 
 **🚀 Summary**
 
