@@ -125,8 +125,8 @@ map<pair<int, int>, double> generateTraffic(const vector<vector<pair<int, double
 vector<Hub> generateHubs(const vector<int>& hubNodes) {
     vector<Hub> hubs;
     for(int id : hubNodes) {
-        double capacity = 100 + (rand() % 101);  // 100-200 kg capacity
-        double cost = 200 + (rand() % 310);          // $200-500 per unit storage cost
+        double capacity = 1000 + (rand() % 10001);  // 1000-10000 kg capacity
+        double cost = 200 + (rand() % 301);          // Rs. 200-500 per unit storage cost
         hubs.emplace_back(id, cost, capacity);
     }
     return hubs;
@@ -140,15 +140,10 @@ bool cmp(Result& a, Result& b) {
     return a.profit > b.profit;
 }
 
-// Original pathfinding function
-pair<double, double> findMinCostAndTime(vector<vector<pair<int, double>>>& g, 
-                                      int src, int dest, 
-                                      vector<int>& path, 
-                                      map<pair<int, int>, double>& tr, 
-                                      double rent, double speed, 
-                                      double rate, double weight, 
-                                      double perish_rate) {
-        priority_queue<pair<pair<double, double>, int>, vector<pair<pair<double, double>, int>>, greater<>> pq;
+// Original pathfinding function given source and destination
+pair<double, double> findMinCostAndTime(vector<vector<pair<int, double>>>& g, int src, int dest, vector<int>& path, map<pair<int, int>, double>& tr, double rent, double speed, double rate, double weight, double perish_rate) 
+{
+    priority_queue<pair<pair<double, double>, int>, vector<pair<pair<double, double>, int>>, greater<>> pq;
     vector<double> cost(g.size(), 1e18);
     vector<double> timeTaken(g.size(), 1e18);
     vector<int> parent(g.size(), -1);
@@ -172,6 +167,7 @@ pair<double, double> findMinCostAndTime(vector<vector<pair<int, double>>>& g,
             {
                 continue;
             }
+        
             double nw = w * rent + w / speed * 1 / (1 - t) * rate * weight * perish_rate;
             if (cost[u] + nw < cost[v])
             {
